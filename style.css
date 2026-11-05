@@ -1,0 +1,1395 @@
+/* ==============================================================================
+   BIRTHDAY SURPRISE WEBSITE STYLESHEET
+   Matching the reference video: Dark warm glowing ambience, golden embers,
+   romantic animations, mobile-first responsive design.
+   ============================================================================== */
+
+:root {
+    --bg-dark: #0b0307;
+    --bg-gradient: radial-gradient(circle at 50% 30%, #290818 0%, #0d0309 60%, #050104 100%);
+    --gold: #f6c876;
+    --gold-glow: rgba(246, 200, 118, 0.4);
+    --gold-light: #fff0c7;
+    --pink: #ff3b7a;
+    --pink-glow: rgba(255, 59, 122, 0.45);
+    --pink-pastel: #ff759f;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(246, 200, 118, 0.22);
+    --text-main: #ffffff;
+    --text-muted: #e6ccd7;
+    --font-heading: 'Poppins', sans-serif;
+    --font-cursive: 'Dancing Script', cursive;
+    --font-handwriting: 'Caveat', cursive;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--bg-dark);
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    overflow-x: hidden;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ==========================================
+   CANVAS BACKGROUNDS
+========================================== */
+#particles-canvas, #confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+#particles-canvas {
+    z-index: 1;
+}
+
+#confetti-canvas {
+    z-index: 999;
+}
+
+/* ==========================================
+   FLOATING MUSIC BUTTON
+========================================== */
+.music-btn {
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(20, 5, 12, 0.75);
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 0 16px var(--gold-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.music-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 22px rgba(246, 200, 118, 0.7);
+}
+
+.music-icon {
+    font-size: 1.15rem;
+    transition: transform 0.3s;
+}
+
+.sound-wave {
+    display: none;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 14px;
+    margin-left: 3px;
+}
+
+.music-btn.playing .music-icon {
+    display: none;
+}
+
+.music-btn.playing .sound-wave {
+    display: flex;
+}
+
+.sound-wave span {
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    animation: waveBounce 0.8s ease-in-out infinite alternate;
+}
+
+.sound-wave span:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+.sound-wave span:nth-child(2) { height: 14px; animation-delay: 0.3s; }
+.sound-wave span:nth-child(3) { height: 9px; animation-delay: 0.2s; }
+
+@keyframes waveBounce {
+    0% { height: 4px; }
+    100% { height: 14px; }
+}
+
+/* ==========================================
+   APP CONTAINER & STAGES
+========================================== */
+.app-container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: max(20px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+    width: 100%;
+}
+
+.stage {
+    display: none;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.stage-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ==========================================
+   SHARED TYPOGRAPHY & BUTTONS
+========================================== */
+.title-glow {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 16px var(--gold-glow);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.stage-heading {
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 0 14px var(--gold-glow);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-weight: 400;
+}
+
+.tap-hint {
+    font-size: 1rem;
+    color: var(--gold-light);
+    margin-top: 24px;
+    letter-spacing: 0.5px;
+}
+
+.pulse {
+    animation: gentlePulse 2s infinite ease-in-out;
+}
+
+@keyframes gentlePulse {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 14px var(--gold); }
+}
+
+.glow-btn {
+    padding: 13px 32px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff407d 0%, #d81b60 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 20px var(--pink-glow), 0 0 10px rgba(255, 64, 125, 0.4);
+    transition: all 0.3s ease;
+    margin-top: 16px;
+}
+
+.glow-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 26px rgba(255, 64, 125, 0.65);
+}
+
+.glow-btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.btn-subtle {
+    padding: 9px 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    color: var(--gold-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-subtle:hover {
+    background: rgba(246, 200, 118, 0.15);
+    border-color: var(--gold);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 28px 22px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(246, 200, 118, 0.04);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   STAGE 1: 3D GIFT BOX
+========================================== */
+.gift-box-wrapper {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin: 40px auto 20px;
+    cursor: pointer;
+}
+
+.gift-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    animation: boxFloat 3s ease-in-out infinite alternate;
+}
+
+@keyframes boxFloat {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+.gift-box-wrapper:hover .gift-box {
+    animation: boxShake 0.6s ease-in-out infinite;
+}
+
+@keyframes boxShake {
+    0%, 100% { transform: rotate(0deg) scale(1.02); }
+    25% { transform: rotate(-3deg) scale(1.02); }
+    75% { transform: rotate(3deg) scale(1.02); }
+}
+
+.gift-body {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: 150px;
+    height: 120px;
+    background: linear-gradient(135deg, #ff457b 0%, #d81b60 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(216, 27, 96, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+}
+
+.gift-lid {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    width: 170px;
+    height: 38px;
+    background: linear-gradient(135deg, #ff6091 0%, #e0266a 100%);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    z-index: 2;
+    transition: transform 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.6s ease;
+}
+
+.gift-box-wrapper.opened .gift-lid {
+    transform: translateY(-80px) rotate(-25deg) scale(1.1);
+    opacity: 0;
+}
+
+.gift-body .ribbon-v, .gift-lid .ribbon-v {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 100%;
+    background: linear-gradient(to right, #ffd579, #f7b731, #e19816);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+.gift-body .ribbon-h {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 26px;
+    background: linear-gradient(to bottom, #ffd579, #f7b731, #e19816);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+.gift-lid .bow {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 26px;
+}
+
+.gift-lid .bow::before, .gift-lid .bow::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: 5px solid #ffd579;
+    border-radius: 50% 50% 10% 50%;
+    top: 0;
+}
+
+.gift-lid .bow::before {
+    left: 2px;
+    transform: rotate(-30deg);
+}
+
+.gift-lid .bow::after {
+    right: 2px;
+    transform: rotate(30deg) scaleX(-1);
+}
+
+.gift-shadow {
+    position: absolute;
+    bottom: -15px;
+    left: 25px;
+    width: 120px;
+    height: 18px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* ==========================================
+   STAGE 2: SECRET PASSCODE LOCK SCREEN
+========================================== */
+.lock-header {
+    margin-bottom: 22px;
+}
+
+.clock-display {
+    font-size: 3.4rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 0 2px 14px rgba(255, 255, 255, 0.25);
+    font-family: var(--font-heading);
+}
+
+.date-display {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: -4px;
+    margin-bottom: 18px;
+}
+
+.lock-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.passcode-dots {
+    display: flex;
+    gap: 16px;
+    margin: 16px auto 14px;
+}
+
+.passcode-dots .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.passcode-dots .dot.filled {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+    transform: scale(1.15);
+}
+
+.passcode-dots.shake {
+    animation: dotsShake 0.4s ease-in-out;
+}
+
+@keyframes dotsShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+.passcode-hint {
+    font-size: 0.85rem;
+    color: var(--gold);
+    background: rgba(246, 200, 118, 0.12);
+    padding: 4px 14px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 24px;
+    border: 1px solid rgba(246, 200, 118, 0.25);
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 270px;
+    margin: 0 auto;
+}
+
+.key {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 1.65rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    backdrop-filter: blur(6px);
+}
+
+.key:hover, .key:active {
+    background: rgba(246, 200, 118, 0.25);
+    border-color: var(--gold);
+    transform: scale(0.96);
+    box-shadow: 0 0 14px var(--gold-glow);
+}
+
+.key-delete {
+    font-size: 1.3rem;
+}
+
+.key-empty {
+    width: 72px;
+    height: 72px;
+}
+
+/* ==========================================
+   STAGE 3: THEATER CURTAINS
+========================================== */
+#stage-3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.curtains-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.curtain {
+    width: 50%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        #720512 0px,
+        #a80f20 20px,
+        #4e030b 40px,
+        #990c1c 60px
+    );
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.7);
+    transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.curtains-container.open .curtain-left {
+    transform: translateX(-100%);
+}
+
+.curtains-container.open .curtain-right {
+    transform: translateX(100%);
+}
+
+.curtain-center-action {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    transition: opacity 0.5s ease;
+}
+
+.curtains-container.open .curtain-center-action {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.curtain-open-btn {
+    padding: 16px 38px;
+    border-radius: 40px;
+    background: linear-gradient(135deg, #1f0408, #3b0910);
+    border: 2px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 25px var(--gold-glow), 0 10px 30px rgba(0, 0, 0, 0.8);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.curtain-open-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 35px var(--gold);
+}
+
+.curtains-behind {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.curtains-behind.visible {
+    opacity: 1;
+}
+
+.glowing-spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(246, 200, 118, 0.2);
+    border-top: 3px solid var(--gold);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 16px var(--gold-glow);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   STAGE 4: SWEET INTERSTITIAL NOTE
+========================================== */
+.bear-avatar {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    animation: bearBob 2s ease-in-out infinite alternate;
+}
+
+@keyframes bearBob {
+    0% { transform: translateY(0) rotate(-3deg); }
+    100% { transform: translateY(-8px) rotate(3deg); }
+}
+
+.interstitial-title {
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.interstitial-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   STAGE 5: BIRTHDAY CELEBRATION & CAKE
+========================================== */
+.celebrate-title {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 18px var(--gold-glow);
+    margin-bottom: 6px;
+}
+
+.celebrate-subtitle {
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+}
+
+.counter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+.counter-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 12px 6px;
+    backdrop-filter: blur(8px);
+}
+
+.counter-val {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.counter-lbl {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    display: block;
+}
+
+/* 3-Tier Birthday Cake */
+.cake-container {
+    margin: 10px auto 26px;
+    width: 200px;
+    height: 180px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.cake {
+    position: relative;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cake-tier {
+    border-radius: 8px 8px 4px 4px;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.tier-top {
+    width: 90px;
+    height: 38px;
+    background: linear-gradient(135deg, #ffaec7, #f7709a);
+    z-index: 3;
+}
+
+.tier-mid {
+    width: 130px;
+    height: 44px;
+    background: linear-gradient(135deg, #ff8fad, #ea4a7b);
+    margin-top: -3px;
+    z-index: 2;
+}
+
+.tier-bot {
+    width: 170px;
+    height: 50px;
+    background: linear-gradient(135deg, #e74676, #c2185b);
+    margin-top: -3px;
+    z-index: 1;
+}
+
+.cake-plate {
+    position: absolute;
+    bottom: -6px;
+    left: -10px;
+    width: 190px;
+    height: 10px;
+    background: linear-gradient(to right, #ffd579, #fff0c7, #ffd579);
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+/* Candles & Flame */
+.tier-top .candle {
+    position: absolute;
+    top: -24px;
+    width: 8px;
+    height: 24px;
+    background: repeating-linear-gradient(45deg, #fff, #fff 3px, #ff3b7a 3px, #ff3b7a 6px);
+    border-radius: 3px 3px 0 0;
+}
+
+.candle-1 { left: 16px; }
+.candle-2 { left: 41px; }
+.candle-3 { left: 66px; }
+
+.flame {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 16px;
+    background: radial-gradient(ellipse at bottom, #fff 0%, #ffeb3b 40%, #ff5722 90%);
+    border-radius: 50% 50% 35% 35%;
+    box-shadow: 0 0 12px #ff9800, 0 0 20px #ff5722;
+    animation: flameFlicker 0.4s infinite alternate;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@keyframes flameFlicker {
+    0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+    100% { transform: translateX(-50%) scale(1.12) rotate(2deg); }
+}
+
+.flame.extinguished {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.2);
+}
+
+.smoke {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 16px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 80%);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.smoke.rise {
+    animation: smokeDrift 1.2s forwards;
+}
+
+@keyframes smokeDrift {
+    0% { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-35px) scale(2.5); }
+}
+
+.blow-btn {
+    padding: 12px 28px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 16px var(--gold-glow);
+    transition: all 0.3s ease;
+}
+
+.blow-btn:hover {
+    background: rgba(246, 200, 118, 0.2);
+    transform: scale(1.04);
+}
+
+/* ==========================================
+   STAGE 6: CUTE MEMORIES CAROUSEL
+========================================== */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin: 16px auto;
+    display: flex;
+    align-items: center;
+}
+
+.carousel-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+    border-radius: 18px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.polaroid-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--gold-glow);
+    border-radius: 18px;
+    padding: 12px 12px 18px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.polaroid-img-wrapper {
+    width: 100%;
+    height: 320px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #11050a;
+}
+
+.polaroid-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.polaroid-caption {
+    margin-top: 14px;
+    font-family: var(--font-handwriting);
+    font-size: 1.45rem;
+    color: var(--gold-light);
+    text-shadow: 0 0 8px rgba(246, 200, 118, 0.5);
+    text-align: center;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(15, 3, 8, 0.7);
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.2s ease;
+}
+
+.carousel-arrow.prev { left: -16px; }
+.carousel-arrow.next { right: -16px; }
+
+.carousel-arrow:hover {
+    background: rgba(246, 200, 118, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-indicators {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 12px 0 16px;
+}
+
+.carousel-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.carousel-dot.active {
+    background: var(--gold);
+    width: 22px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px var(--gold);
+}
+
+/* ==========================================
+   STAGE 7: BALLOON POP GAME
+========================================== */
+.balloons-cluster {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 24px auto 16px;
+    height: 150px;
+    align-items: flex-end;
+}
+
+.balloon {
+    position: relative;
+    width: 52px;
+    height: 68px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    cursor: pointer;
+    box-shadow: inset 6px 6px 12px rgba(255, 255, 255, 0.4), inset -4px -4px 8px rgba(0, 0, 0, 0.3), 0 8px 18px rgba(0, 0, 0, 0.4);
+    animation: balloonBob 3s ease-in-out infinite alternate;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.balloon:hover {
+    transform: scale(1.12) translateY(-4px);
+}
+
+.balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.balloon.pop {
+    animation: balloonBurst 0.3s forwards ease-out;
+}
+
+@keyframes balloonBurst {
+    0% { transform: scale(1.2); opacity: 1; }
+    50% { transform: scale(1.6); opacity: 0.6; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes balloonBob {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-12px); }
+}
+
+.balloon:nth-child(1) { animation-delay: 0s; }
+.balloon:nth-child(2) { animation-delay: 0.4s; }
+.balloon:nth-child(3) { animation-delay: 0.8s; }
+.balloon:nth-child(4) { animation-delay: 1.2s; }
+.balloon:nth-child(5) { animation-delay: 1.6s; }
+
+.balloon-note-card {
+    min-height: 75px;
+    width: 100%;
+    max-width: 380px;
+    margin: 16px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    color: var(--gold-light);
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.balloon-progress {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+/* ==========================================
+   STAGE 8: 3X3 PHOTO PUZZLE GAME
+========================================== */
+.puzzle-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.move-counter {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    padding: 4px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: var(--gold);
+}
+
+.puzzle-board-wrapper {
+    width: min(88vw, 310px);
+    height: min(88vw, 310px);
+    max-width: 310px;
+    max-height: 310px;
+    aspect-ratio: 1;
+    margin: 10px auto 16px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid var(--gold);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px var(--gold-glow);
+    touch-action: none;
+}
+
+.puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.puzzle-tile {
+    width: 100%;
+    height: 100%;
+    background-size: 300% 300% !important;
+    background-repeat: no-repeat !important;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    transition: transform 0.15s ease, filter 0.15s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.puzzle-tile .tile-num {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1px 5px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    pointer-events: none;
+    line-height: 1.2;
+}
+
+.puzzle-tile:hover, .puzzle-tile:active {
+    filter: brightness(1.12);
+}
+
+.puzzle-tile.empty {
+    background: rgba(15, 3, 8, 0.9) !important;
+    cursor: default;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.puzzle-board.solved-board .puzzle-tile {
+    box-shadow: inset 0 0 0 1px rgba(246, 200, 118, 0.6);
+}
+
+.puzzle-board.solved-board .tile-num {
+    display: none;
+}
+
+.puzzle-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.puzzle-win-card {
+    margin-top: 14px;
+}
+
+.puzzle-win-card h3 {
+    color: var(--gold);
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+}
+
+.puzzle-win-card p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-bottom: 12px;
+}
+
+/* ==========================================
+   STAGE 9: SCRATCH CARD SURPRISE
+========================================== */
+.scratch-card-wrapper {
+    position: relative;
+    width: 310px;
+    height: 240px;
+    margin: 20px auto 14px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid var(--gold);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--gold-glow);
+    touch-action: none;
+}
+
+.scratch-reveal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.scratch-reveal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.scratch-reveal-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 14px 10px;
+    background: linear-gradient(to top, rgba(10, 2, 6, 0.95) 0%, transparent 100%);
+    text-align: center;
+}
+
+.scratch-reveal-overlay h3 {
+    font-size: 1.25rem;
+    color: var(--gold);
+    margin-bottom: 2px;
+}
+
+.scratch-reveal-overlay p {
+    font-size: 0.88rem;
+    color: #ffffff;
+}
+
+#scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: crosshair;
+}
+
+/* ==========================================
+   STAGE 10: ROMANTIC ENVELOPE & LOVE LETTER
+========================================== */
+.envelope-wrapper {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.envelope {
+    position: relative;
+    width: 250px;
+    height: 160px;
+    background: #e8d0b3;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    margin-top: 16px;
+}
+
+.envelope-pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 125px solid #d4b595;
+    border-right: 125px solid #d4b595;
+    border-bottom: 85px solid #c29d78;
+    border-top: 75px solid transparent;
+    border-radius: 0 0 8px 8px;
+    z-index: 3;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 125px solid transparent;
+    border-right: 125px solid transparent;
+    border-top: 90px solid #ba926a;
+    transform-origin: top;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 4;
+}
+
+.envelope.opened .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope-seal {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 42px;
+    height: 42px;
+    background: radial-gradient(circle, #e62354, #990c2f);
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    z-index: 5;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.envelope.opened .envelope-seal {
+    transform: translateX(-50%) scale(0);
+    opacity: 0;
+}
+
+/* Unfolded Letter Paper */
+.letter-paper {
+    background: #fdf6ec;
+    color: #2b1d15;
+    border-radius: 14px;
+    padding: clamp(20px, 5vw, 32px) clamp(16px, 4vw, 24px);
+    width: min(94vw, 440px);
+    max-height: min(78dvh, 580px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 10px auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(212, 175, 55, 0.15);
+    border: 1px solid #ebd0a7;
+    animation: letterUnfold 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: relative;
+}
+
+.letter-paper::-webkit-scrollbar {
+    width: 5px;
+}
+.letter-paper::-webkit-scrollbar-thumb {
+    background: #d4b595;
+    border-radius: 4px;
+}
+
+@keyframes letterUnfold {
+    0% { transform: translateY(40px) scale(0.9); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.letter-decorations {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.letter-heart-top {
+    font-size: 1.6rem;
+    animation: gentlePulse 2s infinite ease-in-out;
+    display: inline-block;
+}
+
+.letter-greeting {
+    font-family: var(--font-cursive);
+    font-size: clamp(1.6rem, 5vw, 2.1rem);
+    color: #8c1d38;
+    text-align: left;
+    margin-bottom: 14px;
+}
+
+.letter-body {
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.15rem, 3.8vw, 1.35rem);
+    line-height: 1.65;
+    text-align: left;
+    color: #3b281f;
+}
+
+.letter-body p {
+    margin-bottom: 14px;
+}
+
+.letter-signoff {
+    font-family: var(--font-cursive);
+    font-size: clamp(1.4rem, 4.5vw, 1.7rem);
+    color: #8c1d38;
+    text-align: right;
+    margin-top: 18px;
+}
+
+.letter-footer {
+    margin-top: 24px;
+    text-align: center;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN (MOBILE FIRST & ALL PHONES)
+========================================== */
+@media (max-width: 480px) {
+    .title-glow { font-size: clamp(1.45rem, 5.5vw, 1.75rem); }
+    .stage-heading { font-size: clamp(1.25rem, 4.8vw, 1.45rem); }
+    .subtitle { font-size: 0.88rem; margin-bottom: 18px; }
+    .clock-display { font-size: clamp(2.4rem, 9vw, 3rem); }
+    .keypad { width: min(100%, 250px); gap: clamp(10px, 3vw, 14px); }
+    .key { width: clamp(56px, 17vw, 68px); height: clamp(56px, 17vw, 68px); font-size: 1.45rem; }
+    .counter-grid { gap: 6px; }
+    .counter-card { padding: 10px 4px; }
+    .counter-val { font-size: 1.15rem; }
+    .counter-lbl { font-size: 0.68rem; }
+    .cake-container { transform: scale(0.92); margin: 6px auto 18px; }
+    .polaroid-card { width: 98%; padding: 10px 10px 14px; }
+    .polaroid-img-wrapper { height: clamp(230px, 44dvh, 290px); }
+    .polaroid-caption { font-size: 1.25rem; margin-top: 10px; }
+    .carousel-arrow { width: 34px; height: 34px; font-size: 1.3rem; }
+    .carousel-arrow.prev { left: -10px; }
+    .carousel-arrow.next { right: -10px; }
+    .scratch-card-wrapper { width: min(90vw, 290px); height: min(68vw, 220px); }
+    .balloons-cluster { gap: 8px; height: 130px; }
+    .balloon { width: clamp(40px, 11vw, 48px); height: clamp(54px, 14vw, 64px); }
+    .balloon-note-card { min-height: 70px; padding: 16px 14px; font-size: 0.95rem; }
+    .puzzle-board-wrapper { width: min(88vw, 290px); height: min(88vw, 290px); padding: 5px; }
+    .glow-btn { padding: 12px 26px; font-size: 0.98rem; }
+}
+
+@media (max-width: 360px) {
+    .app-container { padding: 16px 10px; }
+    .gift-box-wrapper { width: 140px; height: 140px; margin: 24px auto 16px; }
+    .gift-body { width: 125px; height: 100px; }
+    .gift-lid { width: 140px; height: 32px; }
+    .key { width: 52px; height: 52px; font-size: 1.25rem; }
+    .counter-val { font-size: 1rem; }
+    .puzzle-board-wrapper { width: 250px; height: 250px; }
+}

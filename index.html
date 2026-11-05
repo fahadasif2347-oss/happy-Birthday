@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Happy Birthday Surprise ✨</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Floating Fireflies / Embers Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Confetti Canvas for Explosions -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Background Music Audio / Video Source -->
+    <video id="bg-audio" loop playsinline preload="auto" style="display: none;"></video>
+
+    <!-- Floating Music Toggle Button -->
+    <button id="music-toggle" class="music-btn" aria-label="Toggle Music" title="Play / Pause Music">
+        <span class="music-icon">🎵</span>
+        <div class="sound-wave">
+            <span></span><span></span><span></span>
+        </div>
+    </button>
+
+    <!-- App Container -->
+    <main class="app-container">
+
+        <!-- ==========================================
+             STAGE 1: Gift Box Intro
+        ========================================== -->
+        <section id="stage-1" class="stage active">
+            <div class="stage-content text-center">
+                <h1 id="s1-title" class="title-glow">A surprise awaits you... ✨</h1>
+                <p id="s1-subtitle" class="subtitle">🎁 Something special, just for you 🎁</p>
+
+                <!-- 3D Animated Gift Box -->
+                <div class="gift-box-wrapper" id="gift-box-trigger">
+                    <div class="gift-box">
+                        <div class="gift-lid">
+                            <div class="bow"></div>
+                            <div class="ribbon-v"></div>
+                        </div>
+                        <div class="gift-body">
+                            <div class="ribbon-v"></div>
+                            <div class="ribbon-h"></div>
+                        </div>
+                    </div>
+                    <div class="gift-shadow"></div>
+                </div>
+
+                <p id="s1-tap" class="tap-hint pulse">Tap the gift to open 💖</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 2: Secret Passcode Lock Screen
+        ========================================== -->
+        <section id="stage-2" class="stage">
+            <div class="stage-content text-center">
+                <div class="lock-header">
+                    <div class="clock-display" id="s2-clock">02:44</div>
+                    <div class="date-display" id="s2-date">Tuesday, November 6</div>
+                    <div class="lock-icon" id="lock-icon">🔒</div>
+                    <h2 id="s2-title" class="stage-heading">Enter the secret passcode 🔑</h2>
+                </div>
+
+                <!-- Passcode Dots Indicator -->
+                <div class="passcode-dots" id="passcode-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+
+                <!-- Passcode Hint -->
+                <div class="passcode-hint" id="s2-hint">Hint: 1234</div>
+
+                <!-- Numeric Keypad -->
+                <div class="keypad" id="keypad">
+                    <button class="key" data-num="1">1</button>
+                    <button class="key" data-num="2">2</button>
+                    <button class="key" data-num="3">3</button>
+                    <button class="key" data-num="4">4</button>
+                    <button class="key" data-num="5">5</button>
+                    <button class="key" data-num="6">6</button>
+                    <button class="key" data-num="7">7</button>
+                    <button class="key" data-num="8">8</button>
+                    <button class="key" data-num="9">9</button>
+                    <div class="key-empty"></div>
+                    <button class="key" data-num="0">0</button>
+                    <button class="key key-delete" id="key-delete" aria-label="Delete">⌫</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 3: Theater Velvet Curtains
+        ========================================== -->
+        <section id="stage-3" class="stage">
+            <div class="curtains-container" id="curtains-container">
+                <div class="curtain curtain-left"></div>
+                <div class="curtain curtain-right"></div>
+                <div class="curtain-center-action" id="curtain-action">
+                    <button class="curtain-open-btn" id="btn-open-curtains">💕 Open</button>
+                </div>
+            </div>
+            <div class="curtains-behind text-center" id="curtains-loader">
+                <div class="glowing-spinner"></div>
+                <p id="s3-loading" class="loading-text">Loading something special...</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 4: Sweet Interstitial Message
+        ========================================== -->
+        <section id="stage-4" class="stage">
+            <div class="stage-content text-center glass-card">
+                <div class="bear-avatar" id="s4-avatar">🧸</div>
+                <h2 id="s4-headline" class="interstitial-title">There's something special I want to tell you...</h2>
+                <p id="s4-subtext" class="interstitial-sub">And I hope it makes your day a little brighter ✨</p>
+                <button class="glow-btn" id="btn-continue-s4">Continue ❤️</button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 5: Birthday Celebration & Cake
+        ========================================== -->
+        <section id="stage-5" class="stage">
+            <div class="stage-content text-center">
+                <h1 id="s5-title" class="celebrate-title">Happy Birthday Cutiepie 🎂</h1>
+                <p id="s5-subtitle" class="celebrate-subtitle">The world has been sweeter since 🌸</p>
+
+                <!-- Live Counter Cards -->
+                <div class="counter-grid">
+                    <div class="counter-card">
+                        <span class="counter-val" id="cnt-years">0</span>
+                        <span class="counter-lbl">Years</span>
+                    </div>
+                    <div class="counter-card">
+                        <span class="counter-val" id="cnt-days">0</span>
+                        <span class="counter-lbl">Days</span>
+                    </div>
+                    <div class="counter-card">
+                        <span class="counter-val" id="cnt-hours">0</span>
+                        <span class="counter-lbl">Hours</span>
+                    </div>
+                    <div class="counter-card">
+                        <span class="counter-val" id="cnt-minutes">0</span>
+                        <span class="counter-lbl">Minutes</span>
+                    </div>
+                </div>
+
+                <!-- Interactive 3-Tier Birthday Cake -->
+                <div class="cake-container" id="cake-container">
+                    <div class="cake">
+                        <div class="cake-tier tier-top">
+                            <!-- Candles -->
+                            <div class="candle candle-1">
+                                <div class="flame" id="flame-1"></div>
+                                <div class="smoke" id="smoke-1"></div>
+                            </div>
+                            <div class="candle candle-2">
+                                <div class="flame" id="flame-2"></div>
+                                <div class="smoke" id="smoke-2"></div>
+                            </div>
+                            <div class="candle candle-3">
+                                <div class="flame" id="flame-3"></div>
+                                <div class="smoke" id="smoke-3"></div>
+                            </div>
+                            <div class="icing"></div>
+                        </div>
+                        <div class="cake-tier tier-mid">
+                            <div class="icing"></div>
+                        </div>
+                        <div class="cake-tier tier-bot">
+                            <div class="icing"></div>
+                        </div>
+                        <div class="cake-plate"></div>
+                    </div>
+                </div>
+
+                <!-- Cake Action Buttons -->
+                <div class="cake-actions">
+                    <button class="blow-btn" id="btn-blow-candles">💨 Blow out the candles</button>
+                    <button class="glow-btn hidden" id="btn-see-memories">See Our Memories 💖</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 6: Cute Memories Carousel
+        ========================================== -->
+        <section id="stage-6" class="stage">
+            <div class="stage-content text-center">
+                <h2 class="stage-heading">Cute Memories ✨</h2>
+                
+                <div class="carousel-container" id="carousel">
+                    <button class="carousel-arrow prev" id="carousel-prev" aria-label="Previous Photo">‹</button>
+                    
+                    <div class="carousel-track-wrapper">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Dynamically injected slides -->
+                        </div>
+                    </div>
+
+                    <button class="carousel-arrow next" id="carousel-next" aria-label="Next Photo">›</button>
+                </div>
+
+                <!-- Carousel Indicators -->
+                <div class="carousel-indicators" id="carousel-dots"></div>
+
+                <div class="carousel-footer">
+                    <button class="glow-btn" id="btn-next-surprise-s6">Next Surprise 🎁</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 7: Pop the Wishes Balloons Game
+        ========================================== -->
+        <section id="stage-7" class="stage">
+            <div class="stage-content text-center">
+                <h2 class="stage-heading">Pop the Wishes 🎈</h2>
+                <p class="subtitle">Tap each balloon to reveal a little note</p>
+
+                <!-- Floating Balloons Cluster -->
+                <div class="balloons-cluster" id="balloons-cluster">
+                    <!-- 5 balloons generated dynamically -->
+                </div>
+
+                <!-- Secret Note Display Box -->
+                <div class="balloon-note-card glass-card" id="balloon-note-box">
+                    <p id="balloon-note-text">Tap a balloon above to unlock a sweet note ✨</p>
+                </div>
+
+                <!-- Progress Tracker -->
+                <div class="balloon-progress" id="balloon-progress">Popped 0/5</div>
+
+                <button class="glow-btn hidden" id="btn-continue-s7">Continue ❤️</button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 8: 3x3 Photo Puzzle Game
+        ========================================== -->
+        <section id="stage-8" class="stage">
+            <div class="stage-content text-center">
+                <h2 class="stage-heading">Birthday Puzzle 🧩</h2>
+                <p class="subtitle">Solve to unlock a special memory ✨</p>
+
+                <div class="puzzle-header">
+                    <div class="move-counter" id="move-counter">Moves: 0</div>
+                </div>
+
+                <!-- Puzzle Board -->
+                <div class="puzzle-board-wrapper">
+                    <div class="puzzle-board" id="puzzle-board">
+                        <!-- 9 puzzle tiles dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Puzzle Controls -->
+                <div class="puzzle-controls">
+                    <button class="btn-subtle" id="btn-shuffle-puzzle">🔀 Shuffle Again</button>
+                    <button class="btn-subtle" id="btn-solve-puzzle">💡 Quick Solve</button>
+                </div>
+
+                <!-- Solved Banner -->
+                <div class="puzzle-win-card glass-card hidden" id="puzzle-win-banner">
+                    <h3>🎉 Puzzle completed! 🎉</h3>
+                    <p>You unlocked this precious memory!</p>
+                    <button class="glow-btn" id="btn-next-surprise-s8">One Last Surprise ❤️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 9: Scratch Card Surprise
+        ========================================== -->
+        <section id="stage-9" class="stage">
+            <div class="stage-content text-center">
+                <h2 id="s9-title" class="stage-heading">One Last Surprise ✨</h2>
+                <p id="s9-subtitle" class="subtitle">Scratch the golden card to reveal it 💖</p>
+
+                <div class="scratch-card-wrapper" id="scratch-wrapper">
+                    <!-- Revealed content underneath -->
+                    <div class="scratch-reveal" id="scratch-reveal">
+                        <img id="scratch-img" src="assets/images/pic4.jpg" alt="Secret Surprise">
+                        <div class="scratch-reveal-overlay">
+                            <h3 id="scratch-rev-title">Happy Birthday!</h3>
+                            <p id="scratch-rev-msg">You mean the absolute world to me ✨</p>
+                        </div>
+                    </div>
+                    <!-- Golden Scratch Canvas on top -->
+                    <canvas id="scratch-canvas"></canvas>
+                </div>
+
+                <div class="scratch-footer">
+                    <button class="glow-btn hidden" id="btn-read-letter">Read My Letter 💌</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             STAGE 10: Romantic Envelope & Love Letter
+        ========================================== -->
+        <section id="stage-10" class="stage">
+            <div class="stage-content text-center">
+                <!-- Sealed Envelope -->
+                <div class="envelope-wrapper" id="envelope-wrapper">
+                    <h2 id="s10-env-title" class="stage-heading">A Letter Just For You 💌</h2>
+                    <div class="envelope" id="envelope-trigger">
+                        <div class="envelope-flap"></div>
+                        <div class="envelope-seal">💖</div>
+                        <div class="envelope-pocket"></div>
+                    </div>
+                    <p id="s10-env-hint" class="tap-hint pulse">Tap to open 💖</p>
+                </div>
+
+                <!-- Unfolded Letter Paper -->
+                <div class="letter-paper hidden" id="letter-paper">
+                    <div class="letter-decorations">
+                        <span class="letter-heart-top">❤️</span>
+                    </div>
+                    <div class="letter-content" id="letter-content">
+                        <h3 class="letter-greeting" id="letter-greeting">My dearest,</h3>
+                        <div class="letter-body" id="letter-body">
+                            <!-- Typewriter paragraphs injected dynamically -->
+                        </div>
+                        <p class="letter-signoff" id="letter-signoff">Forever yours, with all my heart ❤️</p>
+                    </div>
+
+                    <!-- Replay Experience Button -->
+                    <div class="letter-footer">
+                        <button class="btn-subtle" id="btn-replay">🔄 Replay Surprise</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Configuration Script -->
+    <script src="config.js"></script>
+    <!-- Core Application Script -->
+    <script src="script.js"></script>
+</body>
+</html>
