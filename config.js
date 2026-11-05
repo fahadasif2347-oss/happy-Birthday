@@ -11,7 +11,7 @@ const CONFIG = {
     passcodeHint: "Hint: 1234",         // Hint displayed under the keypad
 
     // Audio Settings
-    musicPath: "assets/audio/song.mp4", // Path to the background song
+    musicPath: "audio/song.mp4", // Path to the background song
     musicVolume: 0.7,                   // Default volume (0.0 to 1.0)
 
     // Stage 1: Gift Box Intro
@@ -53,19 +53,19 @@ const CONFIG = {
     // Stage 6: Cute Memories Carousel (4 Photos)
     memories: [
         {
-            image: "assets/images/pic1.jpg",
+            image: "images/pic1.jpg",
             caption: "Our first adventure together 🚗"
         },
         {
-            image: "assets/images/pic2.jpg",
+            image: "images/pic2.jpg",
             caption: "Stargazing at midnight ✨"
         },
         {
-            image: "assets/images/pic3.jpg",
+            image: "images/pic3.jpg",
             caption: "You make me smile every single day 🥰"
         },
         {
-            image: "assets/images/pic4.jpg",
+            image: "images/pic4.jpg",
             caption: "Loving you more with every heartbeat ❤️"
         }
     ],
@@ -80,14 +80,14 @@ const CONFIG = {
     ],
 
     // Stage 8: 3x3 Puzzle Photo
-    puzzleImage: "assets/images/pic2.jpg",
+    puzzleImage: "images/pic2.jpg",
 
     // Stage 9: Scratch Card Surprise
     scratchCard: {
         title: "One Last Surprise ✨",
         subtitle: "Scratch the golden card to reveal it 💖",
         scratchHint: "Scratch here 💖\nReveal your secret surprise",
-        revealImage: "assets/images/pic4.jpg",
+        revealImage: "images/pic4.jpg",
         revealTitle: "Happy Birthday!",
         revealMessage: "You mean the absolute world to me ✨",
         nextButtonText: "Read My Letter 💌"
